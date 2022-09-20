@@ -10,15 +10,15 @@ public class BoteSalvavidas {
 	public BoteSalvavidas(Integer numPlaza, TipoZona zona) {
 		this.numPlaza = numPlaza;
 		this.zona = zona;
-		this.idBote = ++id;
+		this.setIdBote(++id);
 	}
 
-	public static Integer getId() {
-		return id;
+	public Integer getIdBote() {
+		return idBote;
 	}
 
-	public static void setId(Integer id) {
-		BoteSalvavidas.id = id;
+	public void setIdBote(Integer idBote) {
+		this.idBote = id;
 	}
 
 	public Integer getNumPlaza() {
