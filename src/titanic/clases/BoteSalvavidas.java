@@ -18,7 +18,7 @@ public class BoteSalvavidas {
 	}
 
 	public void setIdBote(Integer idBote) {
-		this.idBote = id;
+		this.idBote = idBote;
 	}
 
 	public Integer getNumPlaza() {
@@ -39,6 +39,6 @@ public class BoteSalvavidas {
 
 	@Override
 	public String toString() {
-		return "id=" + id + ", numero de plazas=" + numPlaza + ", zona=" + zona;
+		return "id=" + idBote + ", numero de plazas=" + numPlaza + ", zona=" + zona;
 	}
 }
