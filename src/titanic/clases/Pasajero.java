@@ -6,18 +6,18 @@ import titanic.enums.TipoPais;
 import titanic.enums.TipoZona;
 
 public class Pasajero extends Persona {
-	private int numHab;
+	private Integer numHab;
 
-	public Pasajero(String dni, String nombre, TipoPais pais, TipoZona zona, Boolean minusvalia, LocalDate fechaNac, int numHab) {
+	public Pasajero(String dni, String nombre, TipoPais pais, TipoZona zona, Boolean minusvalia, LocalDate fechaNac, Integer numHab) {
 		super(dni, nombre, pais, zona, minusvalia, fechaNac);
 		this.numHab = numHab;
 	}
 
-	public int getNumHab() {
+	public Integer getNumHab() {
 		return numHab;
 	}
 
-	public void setNumHab(int numHab) {
+	public void setNumHab(Integer numHab) {
 		this.numHab = numHab;
 	}
 
