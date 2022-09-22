@@ -85,6 +85,22 @@ public abstract class Persona {
 		
 		return mayor;
 	}
+	
+	public Boolean esAnciano() {
+		Boolean anciano = true;
+		
+		if ((LocalDate.now().getYear() - this.getFechaNac().getYear()) < 65) {
+			anciano = false;
+			
+			if ((LocalDate.now().getMonthValue() - this.getFechaNac().getMonthValue()) <= 0 && (LocalDate.now().getYear() - this.getFechaNac().getYear()) == 64) {
+				if ((LocalDate.now().getDayOfMonth() - this.getFechaNac().getDayOfMonth()) <= 0 && (LocalDate.now().getMonthValue() - this.getFechaNac().getMonthValue()) == 0) {
+					anciano = true;
+				}
+			}
+		}
+		
+		return anciano;
+	}
 
 	@Override
 	public int hashCode() {

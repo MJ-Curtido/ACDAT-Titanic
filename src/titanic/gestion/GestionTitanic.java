@@ -14,8 +14,10 @@ import titanic.enums.TipoZona;
 
 public class GestionTitanic {
 	private Map<BoteSalvavidas, ArrayList<Persona>> mapaBotes;
+	private ArrayList<BoteSalvavidas> listaBotes;
 
-	public GestionTitanic(Map<BoteSalvavidas, ArrayList<Persona>> mapaBotes) {
+	public GestionTitanic() {
+		this.listaBotes = DAOBotes.getInstance().getBotes();
 		this.mapaBotes = new HashMap<BoteSalvavidas, ArrayList<Persona>>();
 		
 		llenarMapaBotes();
@@ -26,16 +28,43 @@ public class GestionTitanic {
 		
 		for (Persona persona : listaPersonas) {
 			meterNiniosFamiliar(persona, listaPersonas);
+			meterAncianos(persona, listaPersonas);
+			meterAdultos(persona, listaPersonas);
+			meterTripulacion(persona, listaPersonas);
 		}
 	}
 	
-	public BoteSalvavidas obtenerBote(TipoZona zona) {
-		ArrayList<BoteSalvavidas> listaBotes = DAOBotes.getInstance().getBotes();
-		
+	private void meterTripulacion(Persona persona, ArrayList<Persona> listaPersonas) {
+		//hacerlo
+	}
+
+	private void meterAdultos(Persona persona, ArrayList<Persona> listaPersonas) {
+		if (persona instanceof Pasajero && !persona.esAnciano() && persona.esMayorEdad()) {
+			BoteSalvavidas bote = obtenerBoteLibre(persona.getZona());
+			
+			mapaBotes.get(bote).add(persona);
+			listaPersonas.remove(persona);
+			
+			bote.setNumPlaza(bote.getNumPlaza() - 1);
+		}
+	}
+
+	private void meterAncianos(Persona persona, ArrayList<Persona> listaPersonas) {
+		if (persona.esAnciano() && persona instanceof Pasajero) {
+			BoteSalvavidas bote = obtenerBoteLibre(persona.getZona());
+			
+			mapaBotes.get(obtenerBoteLibre(persona.getZona())).add(persona);
+			listaPersonas.remove(persona);
+			
+			bote.setNumPlaza(bote.getNumPlaza() - 1);
+		}
+	}
+
+	public BoteSalvavidas obtenerBoteLibre(TipoZona zona) {
 		BoteSalvavidas bote = null;
 		
 		for (BoteSalvavidas boteSalvavidas : listaBotes) {
-			if (boteSalvavidas.getZona() == zona) {
+			if (boteSalvavidas.getZona() == zona && boteSalvavidas.getNumPlaza() > 0) {
 				bote = boteSalvavidas;
 			}
 		}
@@ -46,12 +75,12 @@ public class GestionTitanic {
 	public void meterNiniosFamiliar(Persona persona, ArrayList<Persona> listaPersonas) {
 		ArrayList<Persona> listaPadres = new ArrayList<Persona>();
 		
-		if (!persona.esMayorEdad()) {
-			if (mapaBotes.get(obtenerBote(persona.getZona())) == null) {
-				mapaBotes.put(obtenerBote(persona.getZona()), new ArrayList<Persona>());
+		if (!persona.esMayorEdad() && persona instanceof Pasajero) {
+			if (mapaBotes.get(obtenerBoteLibre(persona.getZona())) == null) {
+				mapaBotes.put(obtenerBoteLibre(persona.getZona()), new ArrayList<Persona>());
 			}
 			
-			mapaBotes.get(obtenerBote(persona.getZona())).add(persona);
+			mapaBotes.get(obtenerBoteLibre(persona.getZona())).add(persona);
 			listaPersonas.remove(persona);
 			
 			for (Persona personaFamiliar : listaPersonas) {
@@ -61,7 +90,7 @@ public class GestionTitanic {
 						Pasajero pasajeroFamiliar = (Pasajero) personaFamiliar;
 						
 						if (pasajero.getNumHab() == pasajero.getNumHab()) {
-							mapaBotes.get(obtenerBote(persona.getZona())).add(personaFamiliar);
+							mapaBotes.get(obtenerBoteLibre(persona.getZona())).add(personaFamiliar);
 							listaPersonas.remove(personaFamiliar);
 						}
 					}
@@ -79,7 +108,7 @@ public class GestionTitanic {
 			}
 			if (!listaPadres.isEmpty()) {
 				Collections.shuffle(listaPadres);
-				mapaBotes.get(obtenerBote(persona.getZona())).add(listaPadres.get(0));
+				mapaBotes.get(obtenerBoteLibre(persona.getZona())).add(listaPadres.get(0));
 				listaPersonas.remove(listaPadres.get(0));
 				listaPadres.clear();
 			}
