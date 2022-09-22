@@ -6,7 +6,7 @@ import java.util.Objects;
 import titanic.enums.TipoPais;
 import titanic.enums.TipoZona;
 
-public class Persona {
+public abstract class Persona {
 	private String dni, nombre;
 	private TipoPais pais;
 	private TipoZona zona;
