@@ -69,6 +69,22 @@ public class Persona {
 	public void setFechaNac(LocalDate fechaNac) {
 		this.fechaNac = fechaNac;
 	}
+	
+	public Boolean esMayorEdad() {
+		Boolean mayor = true;
+		
+		if ((LocalDate.now().getYear() - this.getFechaNac().getYear()) < 18) {
+			mayor = false;
+			
+			if ((LocalDate.now().getMonthValue() - this.getFechaNac().getMonthValue()) <= 0 && (LocalDate.now().getYear() - this.getFechaNac().getYear()) == 17) {
+				if ((LocalDate.now().getDayOfMonth() - this.getFechaNac().getDayOfMonth()) <= 0 && (LocalDate.now().getMonthValue() - this.getFechaNac().getMonthValue()) == 0) {
+					mayor = true;
+				}
+			}
+		}
+		
+		return mayor;
+	}
 
 	@Override
 	public int hashCode() {
