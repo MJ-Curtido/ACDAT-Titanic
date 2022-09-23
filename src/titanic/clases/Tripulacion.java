@@ -1,6 +1,7 @@
 package titanic.clases;
 
 import java.time.LocalDate;
+import java.util.Comparator;
 
 import titanic.enums.TipoPais;
 import titanic.enums.TipoResponsabilidad;
@@ -26,5 +27,12 @@ public class Tripulacion extends Persona {
 	@Override
 	public String toString() {
 		return super.toString() + ", responsabilidad=" + responsabilidad;
+	}
+	
+	class ComparadorResponsabilidad implements Comparator<Tripulacion> {
+	    @Override
+	    public int compare(Tripulacion trip1, Tripulacion trip2) {
+	        return trip1.getResponsabilidad().compareTo(trip2.getResponsabilidad());
+	    }
 	}
 }

@@ -3,7 +3,7 @@ package titanic.enums;
 import java.util.List;
 
 public enum TipoZona {
-	PROA(List.of(1, 2, 3)), POPA(List.of(4, 5, 6)), BABOR(List.of(7, 8, 9)), ESTRIBOR(List.of(10, 11, 12));
+	PROA(List.of(1, 2, 3)), ESTRIBOR(List.of(4, 5, 6)), POPA(List.of(7, 8, 9)), BABOR(List.of(10, 11, 12));
 	
 	private List<Integer> escaleras;
 	

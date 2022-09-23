@@ -1,6 +1,7 @@
 package titanic.clases;
 
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.Objects;
 
 import titanic.enums.TipoPais;
@@ -123,5 +124,12 @@ public abstract class Persona {
 	public String toString() {
 		return "Persona: dni=" + dni + ", nombre=" + nombre + ", pais=" + pais + ", zona=" + zona + ", minusvalia="
 				+ minusvalia + ", fechaNac=" + fechaNac;
+	}
+	
+	public static class ComparadorEdad implements Comparator<Persona> {
+	    @Override
+	    public int compare(Persona pers1, Persona pers2) {
+	        return pers1.getFechaNac().compareTo(pers2.getFechaNac());
+	    }
 	}
 }
