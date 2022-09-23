@@ -29,7 +29,7 @@ public class Tripulacion extends Persona {
 		return super.toString() + ", responsabilidad=" + responsabilidad;
 	}
 	
-	class ComparadorResponsabilidad implements Comparator<Tripulacion> {
+	public static class ComparadorResponsabilidad implements Comparator<Tripulacion> {
 	    @Override
 	    public int compare(Tripulacion trip1, Tripulacion trip2) {
 	        return trip1.getResponsabilidad().compareTo(trip2.getResponsabilidad());
