@@ -50,32 +50,36 @@ public class GestionTitanic {
 
 	private void meterTripulacion(ArrayList<Tripulacion> listaTripulantes) {
 		for (Tripulacion trip : listaTripulantes) {
-			if (mapaBotes.get(obtenerBoteLibre(trip.getZona())) == null) {
-				mapaBotes.put(obtenerBoteLibre(trip.getZona()), new ArrayList<Persona>());
+			BoteSalvavidas bote = obtenerBoteLibre(trip.getZona(), 1);
+
+			if (bote != null) {
+				if (mapaBotes.get(bote) == null) {
+					mapaBotes.put(bote, new ArrayList<Persona>());
+				}
+				
+				mapaBotes.get(bote).add(trip);
+				listaTripulantes.remove(trip);
+
+				bote.setNumPlaza(bote.getNumPlaza() - 1);
 			}
-			
-			BoteSalvavidas bote = obtenerBoteLibre(trip.getZona());
-
-			mapaBotes.get(bote).add(trip);
-			listaTripulantes.remove(trip);
-
-			bote.setNumPlaza(bote.getNumPlaza() - 1);
 		}
 	}
 
 	private void meterAdultos(ArrayList<Pasajero> listaPasajeros) {
 		for (Pasajero pasajero : listaPasajeros) {
 			if (!pasajero.esAnciano() && pasajero.esMayorEdad()) {
-				if (mapaBotes.get(obtenerBoteLibre(pasajero.getZona())) == null) {
-					mapaBotes.put(obtenerBoteLibre(pasajero.getZona()), new ArrayList<Persona>());
+				BoteSalvavidas bote = obtenerBoteLibre(pasajero.getZona(), 1);
+
+				if (bote != null) {
+					if (mapaBotes.get(bote) == null) {
+						mapaBotes.put(bote, new ArrayList<Persona>());
+					}
+					
+					mapaBotes.get(bote).add(pasajero);
+					listaPasajeros.remove(pasajero);
+
+					bote.setNumPlaza(bote.getNumPlaza() - 1);
 				}
-				
-				BoteSalvavidas bote = obtenerBoteLibre(pasajero.getZona());
-
-				mapaBotes.get(bote).add(pasajero);
-				listaPasajeros.remove(pasajero);
-
-				bote.setNumPlaza(bote.getNumPlaza() - 1);
 			}
 		}
 	}
@@ -83,34 +87,25 @@ public class GestionTitanic {
 	private void meterAncianos(ArrayList<Pasajero> listaPasajeros) {
 		for (Pasajero pasajero : listaPasajeros) {
 			if (pasajero.esAnciano()) {
-				if (mapaBotes.get(obtenerBoteLibre(pasajero.getZona())) == null) {
-					mapaBotes.put(obtenerBoteLibre(pasajero.getZona()), new ArrayList<Persona>());
+				BoteSalvavidas bote = obtenerBoteLibre(pasajero.getZona(), 1);
+
+				if (bote != null) {
+					if (mapaBotes.get(bote) == null) {
+						mapaBotes.put(bote, new ArrayList<Persona>());
+					}
+					
+					mapaBotes.get(bote).add(pasajero);
+					listaPasajeros.remove(pasajero);
+
+					bote.setNumPlaza(bote.getNumPlaza() - 1);
 				}
-				
-				BoteSalvavidas bote = obtenerBoteLibre(pasajero.getZona());
-
-				mapaBotes.get(bote).add(pasajero);
-				listaPasajeros.remove(pasajero);
-
-				bote.setNumPlaza(bote.getNumPlaza() - 1);
 			}
 		}
 	}
 
-	public BoteSalvavidas obtenerBoteLibre(TipoZona zona) {
+	public BoteSalvavidas obtenerBoteLibre(TipoZona zona, Integer num) {
 		BoteSalvavidas bote = null;
-
-		for (BoteSalvavidas boteSalvavidas : listaBotes) {
-			if (boteSalvavidas.getZona() == zona && boteSalvavidas.getNumPlaza() > 0) {
-				bote = boteSalvavidas;
-			}
-		}
-
-		return bote;
-	}
-
-	public BoteSalvavidas obtenerBoteLibreFamilia(TipoZona zona, Integer num) {
-		BoteSalvavidas bote = null;
+		Integer siguienteZona = 0;
 
 		for (BoteSalvavidas boteSalvavidas : listaBotes) {
 			if (boteSalvavidas.getZona() == zona && boteSalvavidas.getNumPlaza() >= num) {
@@ -118,6 +113,47 @@ public class GestionTitanic {
 			}
 		}
 
+		if (bote == null) {
+			final Integer ZONAPERSONA;
+
+			for (int i = 0; i < TipoZona.values().length && TipoZona.values()[i] != zona; i++) {
+				if (TipoZona.values()[i] == zona) {
+					if (i == TipoZona.values().length - 1) {
+						siguienteZona = 0;
+					} else {
+						siguienteZona = ++i;
+					}
+				}
+			}
+
+			if (siguienteZona != 0) {
+				ZONAPERSONA = --siguienteZona;
+			} else {
+				ZONAPERSONA = 0;
+			}
+
+			while (siguienteZona != ZONAPERSONA) {
+				for (BoteSalvavidas boteSalvavidas : listaBotes) {
+					if (boteSalvavidas.getZona() == TipoZona.values()[siguienteZona]
+							&& boteSalvavidas.getNumPlaza() >= num) {
+						bote = boteSalvavidas;
+					}
+				}
+
+				if (bote == null) {
+					for (int i = 0; i < TipoZona.values().length
+							&& TipoZona.values()[i] != TipoZona.values()[siguienteZona]; i++) {
+						if (TipoZona.values()[i] == zona) {
+							if (i == TipoZona.values().length - 1) {
+								siguienteZona = 0;
+							} else {
+								siguienteZona = ++i;
+							}
+						}
+					}
+				}
+			}
+		}
 		return bote;
 	}
 
@@ -125,20 +161,15 @@ public class GestionTitanic {
 		ArrayList<Pasajero> listaPadres = new ArrayList<Pasajero>();
 		ArrayList<Pasajero> listaFamilia = new ArrayList<Pasajero>();
 
-		for (Pasajero pasajero : listaFamilia) {
+		for (Pasajero pasajero : listaPasajeros) {
 			if (!pasajero.esMayorEdad()) {
-				if (mapaBotes.get(obtenerBoteLibre(pasajero.getZona())) == null) {
-					mapaBotes.put(obtenerBoteLibre(pasajero.getZona()), new ArrayList<Persona>());
-				}
 				listaFamilia.add(pasajero);
 				listaPasajeros.remove(pasajero);
 
 				for (Pasajero pasajeroFamiliar : listaPasajeros) {
-					if (!pasajero.esMayorEdad()) {
-						if (pasajero.getNumHab() == pasajero.getNumHab()) {
-							listaFamilia.add(pasajeroFamiliar);
-							listaPasajeros.remove(pasajeroFamiliar);
-						}
+					if (!pasajero.esMayorEdad() && pasajero.getNumHab() == pasajero.getNumHab()) {
+						listaFamilia.add(pasajeroFamiliar);
+						listaPasajeros.remove(pasajeroFamiliar);
 					} else {
 						if (pasajero.getNumHab() == pasajero.getNumHab()) {
 							listaPadres.add(pasajeroFamiliar);
@@ -151,8 +182,17 @@ public class GestionTitanic {
 					listaPasajeros.remove(listaPadres.get(0));
 					listaPadres.clear();
 				}
-				mapaBotes.get(obtenerBoteLibreFamilia(pasajero.getZona(), listaFamilia.size())).addAll(listaFamilia);
-				listaFamilia.clear();
+
+				BoteSalvavidas bote = obtenerBoteLibre(pasajero.getZona(), listaFamilia.size());
+
+				if (bote != null) {
+					if (mapaBotes.get(bote) == null) {
+						mapaBotes.put(bote, new ArrayList<Persona>());
+					}
+
+					mapaBotes.get(bote).addAll(listaFamilia);
+					listaFamilia.clear();
+				}
 			}
 		}
 	}
