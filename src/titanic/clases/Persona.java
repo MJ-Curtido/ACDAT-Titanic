@@ -122,14 +122,15 @@ public abstract class Persona {
 
 	@Override
 	public String toString() {
-		return "Persona: dni=" + dni + ", nombre=" + nombre + ", pais=" + pais + ", zona=" + zona + ", minusvalia="
-				+ minusvalia + ", fechaNac=" + fechaNac;
+		//return "Persona: dni=" + dni + ", nombre=" + nombre + ", pais=" + pais + ", zona=" + zona + ", minusvalia="
+				//+ minusvalia + ", fechaNac=" + fechaNac;
+		return nombre;
 	}
 	
 	public static class ComparadorEdad implements Comparator<Persona> {
 	    @Override
 	    public int compare(Persona pers1, Persona pers2) {
-	        return pers1.getFechaNac().compareTo(pers2.getFechaNac());
+	        return pers2.getFechaNac().compareTo(pers1.getFechaNac());
 	    }
 	}
 }

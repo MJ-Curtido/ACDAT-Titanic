@@ -26,7 +26,7 @@ public class Tripulacion extends Persona {
 
 	@Override
 	public String toString() {
-		return super.toString() + ", responsabilidad=" + responsabilidad;
+		return super.toString() + " res=" + responsabilidad;
 	}
 	
 	public static class ComparadorResponsabilidad implements Comparator<Tripulacion> {

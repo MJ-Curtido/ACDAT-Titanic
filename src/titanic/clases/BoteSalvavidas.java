@@ -39,6 +39,6 @@ public class BoteSalvavidas {
 
 	@Override
 	public String toString() {
-		return "id=" + idBote + ", numero de plazas=" + numPlaza + ", zona=" + zona;
+		return "id=" + idBote + " plazas=" + numPlaza + " zona=" + zona;
 	}
 }

@@ -29,11 +29,11 @@ public class DAOBotes {
 		if (lista.isEmpty()) {
 			BoteSalvavidas bote1 = new BoteSalvavidas(7, TipoZona.BABOR);
 			lista.add(bote1);
-			BoteSalvavidas bote2 = new BoteSalvavidas(10, TipoZona.ESTRIBOR);
+			BoteSalvavidas bote2 = new BoteSalvavidas(17, TipoZona.ESTRIBOR);
 			lista.add(bote2);
-			BoteSalvavidas bote3 = new BoteSalvavidas(17, TipoZona.POPA);
+			BoteSalvavidas bote3 = new BoteSalvavidas(10, TipoZona.POPA);
 			lista.add(bote3);
-			BoteSalvavidas bote4 = new BoteSalvavidas(77, TipoZona.PROA);
+			BoteSalvavidas bote4 = new BoteSalvavidas(5, TipoZona.PROA);
 			lista.add(bote4);
 		}
 		

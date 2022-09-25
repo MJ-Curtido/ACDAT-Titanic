@@ -23,6 +23,6 @@ public class Pasajero extends Persona {
 
 	@Override
 	public String toString() {
-		return super.toString() + ", numHab=" + numHab;
+		return super.toString() + " hab=" + numHab;
 	}
 }
